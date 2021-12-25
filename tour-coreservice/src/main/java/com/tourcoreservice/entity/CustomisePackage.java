@@ -179,4 +179,76 @@ public class CustomisePackage {
 		this.travelDuration = travelDuration;
 	}
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Set<CustomisePackageFlightinfo> getFlightInfo() {
+		return flightInfo;
+	}
+
+	public void setFlightInfo(Set<CustomisePackageFlightinfo> flightInfo) {
+		this.flightInfo = flightInfo;
+	}
+
+	public Set<CustomisePackageHotelInfo> getHotel_info() {
+		return hotel_info;
+	}
+
+	public void setHotel_info(Set<CustomisePackageHotelInfo> hotel_info) {
+		this.hotel_info = hotel_info;
+	}
+
+	public String getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(String totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
+	public String getInclusiontext() {
+		return inclusiontext;
+	}
+
+	public void setInclusiontext(String inclusiontext) {
+		this.inclusiontext = inclusiontext;
+	}
+
+	public String getExlusionText() {
+		return exlusionText;
+	}
+
+	public void setExlusionText(String exlusionText) {
+		this.exlusionText = exlusionText;
+	}
+
+	public String getPaymentPolicy() {
+		return paymentPolicy;
+	}
+
+	public void setPaymentPolicy(String paymentPolicy) {
+		this.paymentPolicy = paymentPolicy;
+	}
+
+	public String getTermsandconditions() {
+		return termsandconditions;
+	}
+
+	public void setTermsandconditions(String termsandconditions) {
+		this.termsandconditions = termsandconditions;
+	}
+
+	public String getAditionalinfo() {
+		return aditionalinfo;
+	}
+
+	public void setAditionalinfo(String aditionalinfo) {
+		this.aditionalinfo = aditionalinfo;
+	}
+
 }
