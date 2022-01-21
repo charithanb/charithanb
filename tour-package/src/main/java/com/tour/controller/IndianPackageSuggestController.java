@@ -27,6 +27,9 @@ public class IndianPackageSuggestController {
 		return indianPackageSuggestFacade.create(packageSuggestPojo);
 	}
 	
+	public IndianPackageSuggestPojoResponse getById(long id) {
+		return indianPackageSuggestFacade.getById(id);
+	}
 	@GetMapping
 	public IndianPackageSuggestPojoListResponse getall() {
 		return indianPackageSuggestFacade.getAll();

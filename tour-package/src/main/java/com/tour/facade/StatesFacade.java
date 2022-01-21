@@ -13,6 +13,7 @@ import com.tour.util.ObjectMapperUtils;
 import com.tourcoreservice.entity.Country;
 import com.tourcoreservice.entity.States;
 import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.pojo.tourpackage.StatesPojo;
 import com.tourcoreservice.response.tourpackage.StatesPojoListResponse;
@@ -49,11 +50,20 @@ public class StatesFacade {
 	}
 
 	public StatesPojoResponse getState(Long id) {
+		ifStatesDoesNotExist(id);
 		StatesPojoResponse stateResponse = new StatesPojoResponse();
 		States stateEntity = statesService.getStateById(id);
 		StatesPojo statesPojo = ObjectMapperUtils.map(stateEntity, StatesPojo.class);
 		stateResponse.setStatesPojo(statesPojo);
 		return stateResponse;
+	}
+
+	private void ifStatesDoesNotExist(Long id) {
+		States states = statesService.getStateById(id);
+		if (ObjectUtils.isEmpty(states)) {
+			throw new DataDoesNotExistException("Data doesn't exist");
+		}
+
 	}
 
 	public StatesPojoResponse updateState(StatesPojo statesPojo) {
@@ -64,6 +74,7 @@ public class StatesFacade {
 		 * statePojo = ObjectMapperUtils.map(stateServiceEntity, StatesPojo.class);
 		 * return createDeleteUpdateResponse(statePojo,"Updated successfully");
 		 */
+		ifStatesDoesNotExist(statesPojo.getId());
 		States state = statesService.getStateById(statesPojo.getId());
 		if (!ObjectUtils.isEmpty(state.getCountry())) {
 			deleteExistingCountry(state, state.getCountry());
@@ -82,6 +93,7 @@ public class StatesFacade {
 	}
 
 	public StatesPojoResponse deleteState(long id) {
+		ifStatesDoesNotExist(id);
 		statesService.deleteStateById(id);
 		return createDeleteUpdateResponse(null, "Deleted successfully");
 	}

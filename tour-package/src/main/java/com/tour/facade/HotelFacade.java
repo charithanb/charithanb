@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
 import com.tour.service.AssetService;
 import com.tour.service.HotelService;
@@ -16,6 +17,8 @@ import com.tour.util.ObjectMapperUtils;
 import com.tourcoreservice.entity.Asset;
 import com.tourcoreservice.entity.Category;
 import com.tourcoreservice.entity.Hotel;
+import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.pojo.tourpackage.AssetPojo;
 import com.tourcoreservice.pojo.tourpackage.HotelPartialPojo;
@@ -23,7 +26,6 @@ import com.tourcoreservice.pojo.tourpackage.HotelPojo;
 import com.tourcoreservice.pojo.tourpackage.HotelUpdatePojo;
 import com.tourcoreservice.response.tourpackage.HotelPojoListResponse;
 import com.tourcoreservice.response.tourpackage.HotelPojoResponse;
-
 
 @Component
 public class HotelFacade {
@@ -42,6 +44,7 @@ public class HotelFacade {
 	}
 
 	public HotelPojoResponse getHotel(long id) {
+		ifDataDoesNotExist(id);
 		HotelPojoResponse hotelResponse = new HotelPojoResponse();
 		Hotel hotelEntity = hotelService.getHotelById(id);
 		HotelPojo hotelPojo = ObjectMapperUtils.map(hotelEntity, HotelPojo.class);
@@ -49,7 +52,16 @@ public class HotelFacade {
 		return hotelResponse;
 	}
 
+	private void ifDataDoesNotExist(long id) {
+		Hotel hotel = hotelService.getHotelById(id);
+		if (ObjectUtils.isEmpty(hotel)) {
+			throw new DataDoesNotExistException("Data doesn't exist");
+		}
+
+	}
+
 	public HotelPojoResponse saveHotel(HotelPojo hotelPojo) {
+		ifDataAlreadyExists(hotelPojo.getId());
 		Hotel hotelEntity = ObjectMapperUtils.map(hotelPojo, Hotel.class);
 		Set<Asset> assetEntity = new HashSet<>();
 		for (Asset asset : hotelEntity.getImages()) {
@@ -61,10 +73,19 @@ public class HotelFacade {
 		}
 		Hotel hotelserviceEntity = hotelService.saveHotel(hotelEntity);
 		HotelPojo hotelservicePojo = ObjectMapperUtils.map(hotelserviceEntity, HotelPojo.class);
-		return createDeleteUpdateResponse(null, "Created successfully");
+		return createDeleteUpdateResponse(hotelservicePojo, "Created successfully");
+	}
+
+	private void ifDataAlreadyExists(long id) {
+		Hotel hotel = hotelService.getHotelById(id);
+		if (!ObjectUtils.isEmpty(hotel)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
+
 	}
 
 	public HotelPojoResponse updateHotel(HotelUpdatePojo hotelPojo) {
+		ifDataDoesNotExist(hotelPojo.getId());
 		Hotel existingHotel = hotelService.getHotelById(hotelPojo.getId());
 		Set<Category> category = existingHotel.getCategories();
 		existingHotel = ifCategoryExists(existingHotel, category);
@@ -84,6 +105,7 @@ public class HotelFacade {
 	}
 
 	public HotelPojoResponse deleteHotel(long id) {
+		ifDataDoesNotExist(id);
 		hotelService.deleteHotel(id);
 		return createDeleteUpdateResponse(null, "Deleted successfully");
 

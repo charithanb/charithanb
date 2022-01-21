@@ -30,4 +30,8 @@ public class IndianPackageSuggestService {
 	public IndianPackageSuggest Update(IndianPackageSuggest indianPackageSuggest) {
 		return indianPackageSuggestRepository.save(indianPackageSuggest);
 	}
+
+	public IndianPackageSuggest getById(long id) {
+		return indianPackageSuggestRepository.findById(id).get();
+	}
 }

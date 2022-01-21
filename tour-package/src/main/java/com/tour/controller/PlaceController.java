@@ -65,14 +65,19 @@ public class PlaceController {
 
 	}
 
+	@GetMapping("/main-place/{id}")
+	public MainPlacePojoResponse getMainPlaceById(long id) {
+		return placefacede.getMainPlaceById(id);
+	}
+
 	@PutMapping("/mainplace/update")
-	public MainPlacePojoResponse updateMainPlace(@RequestBody MainPlacePojo mainPlacePojo ) {
+	public MainPlacePojoResponse updateMainPlace(@RequestBody MainPlacePojo mainPlacePojo) {
 		return placefacede.updateMainPlace(mainPlacePojo);
 	}
 
 	@DeleteMapping("/mainplace/{id}")
-	public MainPlacePojoResponse deleteMainPlace(@PathVariable("id") long id){
+	public MainPlacePojoResponse deleteMainPlace(@PathVariable("id") long id) {
 		return placefacede.deleteMainPlace(id);
-		
+
 	}
 }

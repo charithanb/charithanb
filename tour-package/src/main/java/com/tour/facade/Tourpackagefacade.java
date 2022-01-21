@@ -26,6 +26,8 @@ import com.tourcoreservice.entity.Place;
 import com.tourcoreservice.entity.Price;
 import com.tourcoreservice.entity.Theme;
 import com.tourcoreservice.entity.Tourpackage;
+import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.tourpackage.FacilityPojo;
 import com.tourcoreservice.pojo.tourpackage.InclusionPojo;
 import com.tourcoreservice.pojo.tourpackage.IterneryPojo;
@@ -61,6 +63,7 @@ public class Tourpackagefacade {
 	}
 
 	public TourpackagePojoResponse getPackage(long id) {
+		ifDataDoesNotExist(id);
 		TourpackagePojoResponse tourpackageResponse = new TourpackagePojoResponse();
 		Tourpackage tourpackageEntity = tourPackageService.getPackageById(id);
 		TourpackagePojo tourpackagePojo = ObjectMapperUtils.map(tourpackageEntity, TourpackagePojo.class);
@@ -69,7 +72,16 @@ public class Tourpackagefacade {
 
 	}
 
+	private void ifDataDoesNotExist(long id) {
+		Tourpackage tourpackage = tourPackageService.getPackageById(id);
+		if(ObjectUtils.isEmpty(tourpackage)) {
+			throw new DataDoesNotExistException("Data doesn't exist");
+		}
+		
+	}
+
 	public PackageIdPojoResponse savePackageMainDetails(TourpackagePojo tourPackagePojo) {
+		idPackageAlreadyExists(tourPackagePojo.getId());
 		PackageIdPojoResponse packageIdResponse = new PackageIdPojoResponse();
 		Tourpackage tourpackage = ObjectMapperUtils.map(tourPackagePojo, Tourpackage.class);
 		Tourpackage tourpackageEntity = tourPackageService.savePackage(tourpackage);
@@ -78,7 +90,15 @@ public class Tourpackagefacade {
 		return packageIdResponse;
 	}
 
+	private void idPackageAlreadyExists(long id) {
+		Tourpackage tourpackage = tourPackageService.getPackageById(id);
+		if(!ObjectUtils.isEmpty(tourpackage)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
+	}
+
 	public TourpackagePojoResponse updatePakage(TourPackageUpdatePojo pack) {
+		ifDataDoesNotExist(pack.getId());
 		TourpackagePojoResponse tourpackageResponse = new TourpackagePojoResponse();
 		Tourpackage existingtourpackage = tourPackageService.getPackageById(pack.getId());
 		Facility facility = existingtourpackage.getFacility();
@@ -116,6 +136,7 @@ public class Tourpackagefacade {
 
 	@Transactional
 	public void deletePackage(long id) {
+		ifDataDoesNotExist(id);
 		Tourpackage existingtourpackage = tourPackageService.getPackageById(id);
 		List<Iternery> existingIternery = iterneryService.getIterneries();
 		deleteExistingIterneries(existingIternery, id);
@@ -206,9 +227,9 @@ public class Tourpackagefacade {
 	}
 
 	public Set<Asset> getPackImage(long id) {
+		ifDataDoesNotExist(id); 
 		Tourpackage tourpackage = tourPackageService.getPackageById(id);
 		Set<Asset> asset = tourpackage.getImages();
-
 		return asset;
 	}
 

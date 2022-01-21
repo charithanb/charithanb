@@ -40,7 +40,7 @@ public class StatesController {
 		return statesFacade.getState(id);
 	}
 
-	// Update States 
+	// Update States
 	@PutMapping
 	public StatesPojoResponse updateStateById(@RequestBody StatesPojo state) {
 		return statesFacade.updateState(state);

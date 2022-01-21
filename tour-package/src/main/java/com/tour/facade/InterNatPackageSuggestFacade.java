@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import com.tour.service.InterNatPackageSuggestService;
 import com.tour.util.ObjectMapperUtils;
 import com.tourcoreservice.entity.InterNatPackageSuggest;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.tourpackage.InterNatPackageSuggestPojo;
 import com.tourcoreservice.response.tourpackage.InterNatPackageSuggestPojoListResponse;
 import com.tourcoreservice.response.tourpackage.InterNatPackageSuggestPojoResponse;
@@ -38,17 +40,36 @@ public class InterNatPackageSuggestFacade {
 	}
 
 	public void delete(long id) {
+		ifDataDoesNotExist(id);
 		interNatPackageSuggestService.delete(id);
 
 	}
 
 	public InterNatPackageSuggestPojoResponse update(InterNatPackageSuggestPojo packageSuggestPojo) {
+		ifDataDoesNotExist(packageSuggestPojo.getId());
 		InterNatPackageSuggest interNatPackageSuggest = ObjectMapperUtils.map(packageSuggestPojo,
 				InterNatPackageSuggest.class);
 		interNatPackageSuggest = interNatPackageSuggestService.Update(interNatPackageSuggest);
 		packageSuggestPojo = ObjectMapperUtils.map(interNatPackageSuggest, InterNatPackageSuggestPojo.class);
 		InterNatPackageSuggestPojoResponse packageSuggestPojoResponse = new InterNatPackageSuggestPojoResponse();
 		return packageSuggestPojoResponse;
+	}
+
+	public InterNatPackageSuggestPojoResponse getByid(long id) {
+		ifDataDoesNotExist(id);
+		InterNatPackageSuggestPojoResponse interNatPackageSuggestPojoResponse = new InterNatPackageSuggestPojoResponse();
+		InterNatPackageSuggest interNatPackageSuggest = interNatPackageSuggestService.getByid(id);
+		InterNatPackageSuggestPojo interNatPackageSuggestPojo = ObjectMapperUtils.map(interNatPackageSuggest, InterNatPackageSuggestPojo.class);
+		interNatPackageSuggestPojoResponse.setInterNatPackageSuggestPojo(interNatPackageSuggestPojo);
+		return interNatPackageSuggestPojoResponse;
+	}
+
+	private void ifDataDoesNotExist(long id) {
+		InterNatPackageSuggest interNatPackageSuggest = interNatPackageSuggestService.getByid(id);
+		if(ObjectUtils.isEmpty(interNatPackageSuggest)) {
+			throw new DataDoesNotExistException("Data doesn't exist");
+		}
+		
 	}
 
 }

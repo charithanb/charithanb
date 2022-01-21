@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import com.account.accountservice.service.CustomerService;
 import com.tourcoreservice.entity.Address;
 import com.tourcoreservice.entity.Customer;
 import com.tourcoreservice.entity.Role;
 import com.tourcoreservice.entity.User;
+import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.account.CustomerPojo;
-import com.tourcoreservice.pojo.account.EmployeePojo;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.response.account.CustomerPojoListResponse;
 import com.tourcoreservice.response.account.CustomerPojoResponse;
@@ -45,12 +47,21 @@ public class CustomerFacade {
 
 	public CustomerPojoResponse create(CustomerPojo customerPojo) {
 		// exception handle
+		ifCustomerExists(customerPojo.getId());
 		Customer customer = ObjectMapperUtils.map(customerPojo, Customer.class);
 		String hashPassword = passwordEncoder.encode(customerPojo.getPassword());
 		customer.setPassword(hashPassword);
 		customer = customerService.create(customer);
 		customerPojo = ObjectMapperUtils.map(customer, CustomerPojo.class);
 		return createDeleteUpdateResponse(customerCreatedSuccessfully, customerPojo);
+	}
+
+	private void ifCustomerExists(long id) {
+		User customer = customerService.findById(id);
+		if (!ObjectUtils.isEmpty(customer)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
+
 	}
 
 	private CustomerPojoResponse createDeleteUpdateResponse(String message, CustomerPojo customerPojo) {
@@ -74,6 +85,7 @@ public class CustomerFacade {
 	}
 
 	public CustomerPojoResponse update(CustomerPojo customerPojo) {
+		ifCustomerDoesNotExist(customerPojo.getId());
 		User userEntity = customerService.findById(customerPojo.getId());
 		deleteExistingRoles(userEntity, userEntity.getRoles());
 		deleteExistingAddresses(userEntity, userEntity.getAddresses());
@@ -84,6 +96,14 @@ public class CustomerFacade {
 		customerPojo = ObjectMapperUtils.map(userEntity, CustomerPojo.class);
 		return createDeleteUpdateResponse(updateSuccessfully, customerPojo);
 
+	}
+
+	private void ifCustomerDoesNotExist(long id) {
+		User customer = customerService.findById(id);
+		if(ObjectUtils.isEmpty(customer)) {
+			throw new DataDoesNotExistException("Customer data doesn't exist");
+		}
+		
 	}
 
 	private void deleteExistingAddresses(User user, Set<Address> addresses) {
@@ -97,12 +117,14 @@ public class CustomerFacade {
 	}
 
 	public CustomerPojoResponse delete(long id) {
+		ifCustomerDoesNotExist(id);
 		User userEntity = customerService.findById(id);
 		customerService.delete(userEntity);
 		return createDeleteUpdateResponse(customerDeleteSuccessfully, null);
 	}
 
 	public CustomerPojoResponse getCustomerById(long customerId) {
+		ifCustomerDoesNotExist(customerId);
 		User userEntity = customerService.findById(customerId);
 		CustomerPojo customerPojo = ObjectMapperUtils.map(userEntity, CustomerPojo.class);
 		return createDeleteUpdateResponse("", customerPojo);

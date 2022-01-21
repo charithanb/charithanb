@@ -18,7 +18,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableResourceServer
-@EnableGlobalMethodSecurity(prePostEnabled=true,securedEnabled=true)
 @EntityScan(basePackages = "com.tourcoreservice.entity")
 @EnableFeignClients
 public class AccountServiceApplication {

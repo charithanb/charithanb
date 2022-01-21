@@ -13,6 +13,7 @@ import com.tour.util.ObjectMapperUtils;
 import com.tourcoreservice.entity.Country;
 import com.tourcoreservice.entity.Regions;
 import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.pojo.tourpackage.CountryPojo;
 import com.tourcoreservice.response.tourpackage.CountryPojoListResponse;
@@ -33,8 +34,6 @@ public class CountryFacade {
 	}
 
 	private void ifCountryExist(String name) {
-		// TODO Auto-generated method stub
-
 		Country country = countryService.findCountryByName(name);
 		if (!ObjectUtils.isEmpty(country)) {
 			throw new DataAlreadyExistException("Data already exists");
@@ -50,6 +49,7 @@ public class CountryFacade {
 	}
 
 	public CountryPojoResponse getCountry(Long id) {
+		ifCountryDoesNotExist(id);
 		CountryPojoResponse countryResponse = new CountryPojoResponse();
 		Country countryEntity = countryService.getCountryById(id);
 		CountryPojo countryPojo = ObjectMapperUtils.map(countryEntity, CountryPojo.class);
@@ -57,7 +57,16 @@ public class CountryFacade {
 		return countryResponse;
 	}
 
+	private void ifCountryDoesNotExist(Long id) {
+		Country country = countryService.getCountryById(id);
+		if (ObjectUtils.isEmpty(country)) {
+			throw new DataDoesNotExistException("Data doesn't exsits");
+		}
+
+	}
+
 	public CountryPojoResponse updateCountry(CountryPojo countryPojo) {
+		ifCountryDoesNotExist(countryPojo.getId());
 		Country country = countryService.getCountryById(countryPojo.getId());
 		if (!ObjectUtils.isEmpty(country.getRegion())) {
 			deleteExistingStates(country, country.getRegion());
@@ -77,6 +86,7 @@ public class CountryFacade {
 	}
 
 	public CountryPojoResponse deleteCountry(long id) {
+		ifCountryDoesNotExist(id);
 		countryService.deleteCountry(id);
 		return createDeleteUpdateResponse(null, "Deleted successfully");
 	}

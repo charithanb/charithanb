@@ -9,12 +9,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import com.account.accountservice.service.EmployeeService;
 import com.tourcoreservice.entity.Address;
 import com.tourcoreservice.entity.Employee;
 import com.tourcoreservice.entity.Role;
 import com.tourcoreservice.entity.User;
+import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.account.EmployeePojo;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.response.account.EmployeePojoListResponse;
@@ -35,7 +38,7 @@ public class EmployeeFacade {
 
 	@Value("${employee.deleted.success}")
 	private String employeeDeletedSuccessfully;
-	
+
 	@Value("${role.employee}")
 	private String roleEmployee;
 
@@ -43,12 +46,21 @@ public class EmployeeFacade {
 	private PasswordEncoder passwordEncoder;
 
 	public EmployeePojoResponse create(EmployeePojo employeePojo) {
+		ifEmployeeExists(employeePojo.getId());
 		Employee employee = ObjectMapperUtils.map(employeePojo, Employee.class);
 		String hashPassword = passwordEncoder.encode(employeePojo.getPassword());
 		employee.setPassword(hashPassword);
 		employee = employeeService.create(employee);
 		employeePojo = ObjectMapperUtils.map(employee, EmployeePojo.class);
 		return createDeleteUpdateResponse(employeePojo, employeeCreated);
+	}
+
+	private void ifEmployeeExists(long id) {
+		User employee = employeeService.findById(id);
+		if (!ObjectUtils.isEmpty(employee)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
+
 	}
 
 	private EmployeePojoResponse createDeleteUpdateResponse(EmployeePojo employeePojo, String message) {
@@ -71,6 +83,7 @@ public class EmployeeFacade {
 	}
 
 	public EmployeePojoResponse update(EmployeePojo employeePojo) {
+		ifEmployessDoesNotExist(employeePojo.getId());
 		User user = employeeService.findById(employeePojo.getId());
 		deleteExistingRoles(user, user.getRoles());
 		deleteExistingAddresses(user, user.getAddresses());
@@ -80,6 +93,14 @@ public class EmployeeFacade {
 		user = employeeService.update(user);
 		EmployeePojo employee = ObjectMapperUtils.map(user, EmployeePojo.class);
 		return createDeleteUpdateResponse(employee, employeeUpdated);
+	}
+
+	private void ifEmployessDoesNotExist(long id) {
+		User emplyee = employeeService.findById(id);
+		if (ObjectUtils.isEmpty(emplyee)) {
+			throw new DataDoesNotExistException("Employee doesn't exist");
+		}
+
 	}
 
 	private void deleteExistingAddresses(User user, Set<Address> addresses) {
@@ -93,12 +114,14 @@ public class EmployeeFacade {
 	}
 
 	public EmployeePojoResponse delete(long id) {
+		ifEmployessDoesNotExist(id);
 		User user = employeeService.findById(id);
 		employeeService.delete(user);
 		return createDeleteUpdateResponse(null, employeeDeletedSuccessfully);
 	}
 
 	public EmployeePojoResponse getEmployeeById(long employeeId) {
+		ifEmployessDoesNotExist(employeeId);
 		User user = employeeService.findById(employeeId);
 		EmployeePojo employeePojo = ObjectMapperUtils.map(user, EmployeePojo.class);
 		return createDeleteUpdateResponse(employeePojo, "");

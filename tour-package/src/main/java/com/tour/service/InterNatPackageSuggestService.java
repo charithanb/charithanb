@@ -29,4 +29,8 @@ public class InterNatPackageSuggestService {
 	public InterNatPackageSuggest Update(InterNatPackageSuggest interNatPackageSuggest) {
 		return interNatPackageSuggestRepository.save(interNatPackageSuggest);
 	}
+
+	public InterNatPackageSuggest getByid(long id) {
+		return interNatPackageSuggestRepository.findById(id).get();
+	}
 }

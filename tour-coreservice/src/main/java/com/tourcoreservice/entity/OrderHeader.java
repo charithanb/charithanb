@@ -51,7 +51,7 @@ public class OrderHeader {
 
 	private long creatorId;
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.DETACH)
 	@JoinTable(name = "order_header_customise_package")
 	private CustomisePackage orderDetails;
 

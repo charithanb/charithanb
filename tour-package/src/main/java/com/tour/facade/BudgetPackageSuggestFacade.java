@@ -5,11 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 
 import com.tour.service.BudgetPackageSuggestService;
 import com.tour.util.ObjectMapperUtils;
 import com.tourcoreservice.entity.BudgetPackageSuggest;
 import com.tourcoreservice.entity.Place;
+import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.pojo.tourpackage.BudgetPackageSuggestPojo;
 import com.tourcoreservice.response.tourpackage.BudgetPackageSuggestPojoListResponse;
@@ -22,10 +25,19 @@ public class BudgetPackageSuggestFacade {
 	BudgetPackageSuggestService budgetBasedPackageService;
 
 	public BudgetPackageSuggestPojoResponse create(BudgetPackageSuggestPojo budgetBasedPackagePojo) {
+		ifAlreadyExists(budgetBasedPackagePojo.getId());
 		BudgetPackageSuggest budgetBasedPackage = ObjectMapperUtils.map(budgetBasedPackagePojo, BudgetPackageSuggest.class);
 		budgetBasedPackage = budgetBasedPackageService.create(budgetBasedPackage);
 		budgetBasedPackagePojo = ObjectMapperUtils.map(budgetBasedPackage, BudgetPackageSuggestPojo.class);
 		return createDeleteUpdateResponse(budgetBasedPackagePojo, "Created successfully");
+	}
+
+	private void ifAlreadyExists(long id) {
+		BudgetPackageSuggest budgetPackageSuggest = budgetBasedPackageService.getById(id);
+		if(!ObjectUtils.isEmpty(budgetPackageSuggest)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
+		
 	}
 
 	private BudgetPackageSuggestPojoResponse createDeleteUpdateResponse(BudgetPackageSuggestPojo budgetBasedPackagePojo,
@@ -42,12 +54,21 @@ public class BudgetPackageSuggestFacade {
 	}
 
 	public BudgetPackageSuggestPojoResponse get(long id) {
+		ifDataDoesNotExist(id);
 		BudgetPackageSuggestPojoResponse budgetBasedPackagePojoResponse = new BudgetPackageSuggestPojoResponse();
 		BudgetPackageSuggest budgetBasedPackage = budgetBasedPackageService.getById(id);
 		BudgetPackageSuggestPojo budgetBasedPackagePojo = ObjectMapperUtils.map(budgetBasedPackage,
 				BudgetPackageSuggestPojo.class);
 		budgetBasedPackagePojoResponse.setBudgetBasedPackagePojo(budgetBasedPackagePojo);
 		return budgetBasedPackagePojoResponse;
+	}
+
+	private void ifDataDoesNotExist(long id) {
+		BudgetPackageSuggest budgetPackageSuggest = budgetBasedPackageService.getById(id);
+		if(ObjectUtils.isEmpty(budgetPackageSuggest)) {
+			throw new DataDoesNotExistException("Data doesn't exist");
+		}
+		
 	}
 
 	public BudgetPackageSuggestPojoListResponse findAll() {
@@ -61,12 +82,14 @@ public class BudgetPackageSuggestFacade {
 	}
 
 	public BudgetPackageSuggestPojoResponse delete(long id) {
+		ifDataDoesNotExist(id);
 		budgetBasedPackageService.delete(id);
 		return createDeleteUpdateResponse(null, "Deleted successfully");
 
 	}
 
 	public BudgetPackageSuggestPojoResponse update(BudgetPackageSuggestPojo budgetBasedPackagePojo) {
+		ifDataDoesNotExist(budgetBasedPackagePojo.getId());
 		BudgetPackageSuggest budgetBasedPackage = budgetBasedPackageService.getById(budgetBasedPackagePojo.getId());
 		deleteExisistingPlace(budgetBasedPackage, budgetBasedPackage.getPlace());
 		

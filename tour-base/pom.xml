@@ -54,12 +54,12 @@
 		<module>../registry-service</module>
 		<module>../gateway-service</module>
 		 <module>../tour-auth-service</module>
-		<!--  <module>../account-service</module>-->
+		 <module>../account-service</module>
 		 <module>../tour-coreservice</module> 
  		<module>../tour-package</module>
 		 <module>../order-service</module> 
-       <!--  <module>../western-events</module> 
-		<module>../email-service</module> -->
+       <!--  <module>../western-events</module>  -->
+		<module>../email-service</module>
 		
 
 	</modules>

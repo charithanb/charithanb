@@ -22,7 +22,7 @@ public class ApproverRegion {
 	private String regionName;
 	
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name = "approvers_region")
 	private Set<Approver> approvers;
 

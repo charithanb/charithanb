@@ -43,7 +43,8 @@ public class SeasonPackageSuggestController {
 	}
 
 	@PutMapping("/{id}")
-	public SeasonPackageSuggestPojoResponse update(@RequestBody SeasonPackageSuggestPojo seasonPojo, @PathVariable("id") long id) {
+	public SeasonPackageSuggestPojoResponse update(@RequestBody SeasonPackageSuggestPojo seasonPojo,
+			@PathVariable("id") long id) {
 		seasonPojo.setId(id);
 		return seasonFacade.update(seasonPojo);
 	}

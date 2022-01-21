@@ -21,28 +21,32 @@ public class ThemeController {
 
 	@Autowired
 	ThemeFacade themeFacade;
-	
+
 	@GetMapping
-	public  ThemePojoListResponse allTheme() {
-        return themeFacade.listAllThemes();
-    }
+	public ThemePojoListResponse allTheme() {
+		return themeFacade.listAllThemes();
+	}
+
 	@GetMapping("/{id}")
-    public ThemePojoResponse getTheme(@PathVariable long id) {
-        return themeFacade.getTheme(id);
-        
-    }
-    @PostMapping
-    public ThemePojoResponse create(@RequestBody ThemePojo theme) {
-    	return themeFacade.saveTheme(theme);
-    }
-    @PutMapping("/{id}")
-    public ThemePojoResponse update(@RequestBody ThemePojo theme, @PathVariable long id) {
-    	theme.setId(id);
-    	return themeFacade.updateTheme(theme);
-       
-    }
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable long id) {
-    	themeFacade.deleteTheme(id);
-    }
+	public ThemePojoResponse getTheme(@PathVariable long id) {
+		return themeFacade.getTheme(id);
+
+	}
+
+	@PostMapping
+	public ThemePojoResponse create(@RequestBody ThemePojo theme) {
+		return themeFacade.saveTheme(theme);
+	}
+
+	@PutMapping("/{id}")
+	public ThemePojoResponse update(@RequestBody ThemePojo theme, @PathVariable long id) {
+		theme.setId(id);
+		return themeFacade.updateTheme(theme);
+
+	}
+
+	@DeleteMapping("/{id}")
+	public void delete(@PathVariable long id) {
+		themeFacade.deleteTheme(id);
+	}
 }

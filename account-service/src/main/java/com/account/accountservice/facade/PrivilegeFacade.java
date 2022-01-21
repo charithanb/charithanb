@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+
 import com.account.accountservice.service.PrivilegeService;
 import com.tourcoreservice.entity.Privilege;
+import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.account.PrivilegePojo;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.response.account.PrivilegePojoListResponse;
@@ -31,10 +35,18 @@ public class PrivilegeFacade {
 	private String deleteSuccess;
 
 	public PrivilegePojoResponse create(PrivilegePojo privilegePojo) {
+		ifPrivilageExist(privilegePojo.getId());
 		Privilege privilege = ObjectMapperUtils.map(privilegePojo, Privilege.class);
 		privilege = privilegeService.create(privilege);
 		privilegePojo = ObjectMapperUtils.map(privilege, PrivilegePojo.class);
 		return createUpdateDeleteRespnse(createdSuccess, privilegePojo);
+	}
+
+	private void ifPrivilageExist(Integer id) {
+		Privilege privilege = privilegeService.findPrivilegeById(id);
+		if (!ObjectUtils.isEmpty(privilege)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
 	}
 
 	public PrivilegePojoListResponse getAll() {
@@ -58,6 +70,7 @@ public class PrivilegeFacade {
 	}
 
 	public PrivilegePojoResponse update(PrivilegePojo privilegePojo) {
+		ifPrivilageDataDoesNotExist(privilegePojo.getId());
 		Privilege privilege = privilegeService.findPrivilegeById(privilegePojo.getId());
 		ObjectMapperUtils.map(privilegePojo, privilege);
 		privilege = privilegeService.update(privilege);
@@ -65,13 +78,22 @@ public class PrivilegeFacade {
 		return createUpdateDeleteRespnse(updateSuccess, privilegePojo);
 	}
 
+	private void ifPrivilageDataDoesNotExist(long priviegeId) {
+		Privilege privilege = privilegeService.findPrivilegeById(priviegeId);
+		if (ObjectUtils.isEmpty(privilege)) {
+			throw new DataDoesNotExistException("Specified privilage ID doesn't exist");
+		}
+	}
+
 	public PrivilegePojoResponse delete(long id) {
+		ifPrivilageDataDoesNotExist(id);
 		Privilege privilege = privilegeService.findPrivilegeById(id);
 		privilegeService.delete(privilege);
 		return createUpdateDeleteRespnse(deleteSuccess, null);
 	}
 
 	public PrivilegePojoResponse getPrivilegeById(long id) {
+		ifPrivilageDataDoesNotExist(id);
 		Privilege privilege = privilegeService.findPrivilegeById(id);
 		PrivilegePojo privilegePojo = ObjectMapperUtils.map(privilege, PrivilegePojo.class);
 		return createUpdateDeleteRespnse("", privilegePojo);

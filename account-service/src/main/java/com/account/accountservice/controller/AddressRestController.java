@@ -33,6 +33,12 @@ public class AddressRestController {
 		return addressFacade.listAll();
 	}
 
+	@GetMapping("/{id}")
+	public AddressPojoResponse getAddressById(Long id) {
+		return addressFacade.getById(id);
+		
+	}
+	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
 		addressFacade.delete(id);

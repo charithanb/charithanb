@@ -2,7 +2,6 @@ package com.account.accountservice.facade;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +17,8 @@ import com.tourcoreservice.entity.Privilege;
 import com.tourcoreservice.entity.Role;
 import com.tourcoreservice.entity.User;
 import com.tourcoreservice.exception.account.ParentRolesCannotbeDeleted;
+import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.account.RolePojo;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.response.account.RolePojoListResponse;
@@ -58,6 +59,7 @@ public class RoleFacade {
 	private PrivilegeService privilegeService;
 
 	public RolePojoResponse create(RolePojo rolePojo) {
+		ifRoleExist(rolePojo.getId());
 		Role role = ObjectMapperUtils.map(rolePojo, Role.class);
 		String name = role.getName().toUpperCase();
 		String code = role.getCode().toUpperCase();
@@ -66,6 +68,14 @@ public class RoleFacade {
 		role = roleService.create(role);
 		rolePojo = ObjectMapperUtils.map(role, RolePojo.class);
 		return createUpdateDeleteRespnse(createdSuccess, rolePojo);
+	}
+
+	private void ifRoleExist(long id) {
+		Role role = roleService.findRoleById(id);
+		if (!ObjectUtils.isEmpty(role)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
+
 	}
 
 	public RolePojoListResponse getAllRoles() {
@@ -77,6 +87,7 @@ public class RoleFacade {
 	}
 
 	public RolePojoResponse update(RolePojo rolePojo) {
+		ifDataDoesNotExist(rolePojo.getId());
 		String name = rolePojo.getName().toUpperCase();
 		String code = rolePojo.getCode().toUpperCase();
 		rolePojo.setName(name);
@@ -87,6 +98,14 @@ public class RoleFacade {
 		role = roleService.update(role);
 		rolePojo = ObjectMapperUtils.map(role, RolePojo.class);
 		return createUpdateDeleteRespnse(updateSuccess, rolePojo);
+	}
+
+	private void ifDataDoesNotExist(long id) {
+		Role role = roleService.findRoleById(id);
+		if(ObjectUtils.isEmpty(role)) {
+			throw new DataDoesNotExistException("Data doesn't exist");
+		}
+		
 	}
 
 	private void deleteExistingPrivileges(List<Privilege> privileges, Role role) {
@@ -107,6 +126,7 @@ public class RoleFacade {
 	}
 
 	public RolePojoResponse delete(long id) {
+		ifDataDoesNotExist(id);
 		Role role = roleService.findRoleById(id);
 		checkIfParentRole(role);
 		for (User user : role.getUsers()) {
@@ -128,6 +148,8 @@ public class RoleFacade {
 	}
 
 	public RolePojoResponse addPrivilegeToRole(long roleId, long priviegeId) {
+		ifDataDoesNotExist(roleId);
+		ifPrivilageDataDoesNotExist(priviegeId);
 		Role role = roleService.findRoleById(roleId);
 		List<Privilege> privilegeList = role.getPrivileges();
 		Privilege privilege = privilegeService.findPrivilegeById(priviegeId);
@@ -138,7 +160,16 @@ public class RoleFacade {
 		return createUpdateDeleteRespnse(updateSuccess, rolePojo);
 	}
 
+	private void ifPrivilageDataDoesNotExist(long priviegeId) {
+		Privilege privilege = privilegeService.findPrivilegeById(priviegeId);
+		if(ObjectUtils.isEmpty(privilege)) {
+			throw new DataDoesNotExistException("Specified privilage ID doesn't exist");
+		}
+	}
+
 	public RolePojoResponse deletePrivilegeForRole(long roleId, long priviegeId) {
+		ifDataDoesNotExist(roleId);
+		ifPrivilageDataDoesNotExist(priviegeId);		
 		Role role = roleService.findRoleById(roleId);
 		if (!CollectionUtils.isEmpty(role.getPrivileges())) {
 			Privilege privilege = privilegeService.findPrivilegeById(priviegeId);
@@ -152,6 +183,7 @@ public class RoleFacade {
 	}
 
 	public RolePojoResponse getRoleById(long roleId) {
+		ifDataDoesNotExist(roleId);
 		Role role = roleService.findRoleById(roleId);
 		RolePojo rolePojo = ObjectMapperUtils.map(role, RolePojo.class);
 		return createUpdateDeleteRespnse(null, rolePojo);

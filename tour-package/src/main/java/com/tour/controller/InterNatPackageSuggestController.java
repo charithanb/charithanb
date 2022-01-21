@@ -32,6 +32,10 @@ public class InterNatPackageSuggestController {
 		return interNatPackageSuggestFacade.getAll();
 	}
 	
+	@GetMapping("/{id}")
+	public InterNatPackageSuggestPojoResponse getByid(long id) {
+		return interNatPackageSuggestFacade.getByid(id);
+	}
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable long id) {
 		interNatPackageSuggestFacade.delete(id);

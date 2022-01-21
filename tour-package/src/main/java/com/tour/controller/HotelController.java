@@ -16,12 +16,13 @@ import com.tourcoreservice.pojo.tourpackage.HotelPojo;
 import com.tourcoreservice.pojo.tourpackage.HotelUpdatePojo;
 import com.tourcoreservice.response.tourpackage.HotelPojoListResponse;
 import com.tourcoreservice.response.tourpackage.HotelPojoResponse;
+
 @RestController
 @RequestMapping("/hotel")
 public class HotelController {
 
 	@Autowired
-	  HotelFacade hotelFacade;
+	HotelFacade hotelFacade;
 
 	@GetMapping
 	public HotelPojoListResponse getAll() {
@@ -50,13 +51,14 @@ public class HotelController {
 	public void delete(@PathVariable long id) {
 		hotelFacade.deleteHotel(id);
 	}
-	
+
 	@DeleteMapping("/{id}/{Hotelid}")
-	public void delete(@PathVariable long id,@PathVariable long Hotelid) {
-		hotelFacade.deleteAsset(id,Hotelid);
+	public void delete(@PathVariable long id, @PathVariable long Hotelid) {
+		hotelFacade.deleteAsset(id, Hotelid);
 	}
+
 	@PostMapping("/image/{id}")
 	public void addHotelImage(@RequestBody AssetPojo asset, @PathVariable long id) {
-		hotelFacade.addHotelImage(id,asset);
+		hotelFacade.addHotelImage(id, asset);
 	}
 }
