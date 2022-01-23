@@ -35,7 +35,7 @@ public class CustomisePackageFlightinfoController {
 	}
 
 	@GetMapping("/{id}")
-	public CustomisePackageFlightinfoPojoResponse getCustomisePackageFlightinfoById(@PathVariable Long id) {
+	public CustomisePackageFlightinfoPojoResponse getCustomisePackageFlightinfoById(@PathVariable long id) {
 		return customisePackageFlightinfofacade.getDataByid(id);
 	}
 

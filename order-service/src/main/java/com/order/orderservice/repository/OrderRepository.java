@@ -7,5 +7,5 @@ import com.tourcoreservice.entity.Orders;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Orders, Long> {
-
+	Orders findById(long id);
 }

@@ -59,7 +59,7 @@ public class ApproversRegionFacade {
 		return approverRegionPojoListResponse;
 	}
 
-	public ApproverRegionPojoResponse getByid(Long id) {
+	public ApproverRegionPojoResponse getByid(long id) {
 		ApproverRegionPojoResponse approverRegionPojoResponse = new ApproverRegionPojoResponse();
 		ApproverRegion approverRegion = approversRegionService.getyId(id);
 		ApproverRegionPojo approverRegionPojo = ObjectMapperUtils.map(approverRegion, ApproverRegionPojo.class);

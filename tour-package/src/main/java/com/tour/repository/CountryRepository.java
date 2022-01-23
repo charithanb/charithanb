@@ -9,5 +9,5 @@ import com.tourcoreservice.entity.Country;
 public interface CountryRepository extends JpaRepository<Country,Long>{
 
 	Country findByName(String name);
-
+	Country findById(long id);
 }

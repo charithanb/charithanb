@@ -22,7 +22,7 @@ public class OrderHeaderService {
 		return orderHeaderRepository.findAll();
 	}
 
-	public OrderHeader getOrderyId(Long id) {
+	public OrderHeader getOrderyId(long id) {
 		return orderHeaderRepository.findById(id).get();
 	}
 

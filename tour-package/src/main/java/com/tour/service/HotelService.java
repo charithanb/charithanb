@@ -27,7 +27,7 @@ public class HotelService {
 	}
 	
 	public Hotel getHotelById(long id) {
-        return hotelRepository.findById(id).get();
+        return hotelRepository.findById(id);
     }
 	
 	public void deleteHotel(long id) {

@@ -27,7 +27,7 @@ public class AssetService {
 	}
 
 	public Asset getAssetById(long id) {
-		return assetRepository.findById(id).get();
+		return assetRepository.findById(id);
 	}
 
 	public void deleteAssetById(long id) {

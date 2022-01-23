@@ -19,7 +19,7 @@ public class BudgetPackageSuggestService {
 	}
 
 	public BudgetPackageSuggest getById(long id) {
-		return basedPackageRepository.findById(id).get();
+		return basedPackageRepository.findById(id);
 	}
 
 	public List<BudgetPackageSuggest> getAll() {

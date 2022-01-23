@@ -18,7 +18,7 @@ public class SeasonPackageSuggestService {
 	}
 
 	public SeasonPackageSuggest getById(long id) {
-		return seasonRepository.findById(id).get();
+		return seasonRepository.findById(id);
 	}
 
 	public List<SeasonPackageSuggest> listAll() {

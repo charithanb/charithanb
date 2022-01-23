@@ -35,7 +35,7 @@ public class ApproverController {
 	}
 
 	@GetMapping("/{id}")
-	public ApproverPojoResponse getApproverById(@PathVariable Long id) {
+	public ApproverPojoResponse getApproverById(@PathVariable long id) {
 		return approverFacade.getByid(id);
 	}
 

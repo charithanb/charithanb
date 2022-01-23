@@ -48,7 +48,15 @@ public class CountryFacade {
 		return countryPojoListResponse;
 	}
 
-	public CountryPojoResponse getCountry(Long id) {
+	/*
+	 * public CountryPojoResponse getCountry(long id) { ifCountryDoesNotExist(id);
+	 * CountryPojoResponse countryResponse = new CountryPojoResponse(); Country
+	 * countryEntity = countryService.getCountryById(id); CountryPojo countryPojo =
+	 * ObjectMapperUtils.map(countryEntity, CountryPojo.class);
+	 * countryResponse.setCountryPojo(countryPojo); return countryResponse; }
+	 */
+
+	public CountryPojoResponse getCountry(long id) {
 		ifCountryDoesNotExist(id);
 		CountryPojoResponse countryResponse = new CountryPojoResponse();
 		Country countryEntity = countryService.getCountryById(id);
@@ -56,14 +64,15 @@ public class CountryFacade {
 		countryResponse.setCountryPojo(countryPojo);
 		return countryResponse;
 	}
-
-	private void ifCountryDoesNotExist(Long id) {
+	
+	private void ifCountryDoesNotExist(long id) {
 		Country country = countryService.getCountryById(id);
 		if (ObjectUtils.isEmpty(country)) {
 			throw new DataDoesNotExistException("Data doesn't exsits");
 		}
 
 	}
+
 
 	public CountryPojoResponse updateCountry(CountryPojo countryPojo) {
 		ifCountryDoesNotExist(countryPojo.getId());

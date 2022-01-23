@@ -35,7 +35,7 @@ public class TourpackageService {
 	}
 
 	public Tourpackage getPackageById(long id) {
-		return packagerepo.findById(id).get();
+		return packagerepo.findById(id);
 	}
 
 	public void deletePackage(long id) {

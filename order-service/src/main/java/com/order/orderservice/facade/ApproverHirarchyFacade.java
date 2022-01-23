@@ -50,7 +50,7 @@ public class ApproverHirarchyFacade {
 		return approverHirarchyPojoListResponse;
 	}
 
-	public ApproverHirarchyPojoResponse getApproverHirarchyByid(Long id) {
+	public ApproverHirarchyPojoResponse getApproverHirarchyByid(long id) {
 		ApproverHirarchyPojoResponse approverHirarchyPojoResponse = new ApproverHirarchyPojoResponse();
 		ApproverHirarchy approverHirarchy = approverHirarchyService.getApproverHirarchyById(id);
 		ApproverHirarchyPojo approverHirarchyPojo = ObjectMapperUtils.map(approverHirarchy, ApproverHirarchyPojo.class);

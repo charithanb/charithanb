@@ -19,7 +19,7 @@ public class DurationPackageSuggestService {
 	}
 
 	public DurationPackageSuggest getById(long id) {
-		return durationRepository.findById(id).get();
+		return durationRepository.findById(id);
 	}
 
 	public List<DurationPackageSuggest> listAll() {

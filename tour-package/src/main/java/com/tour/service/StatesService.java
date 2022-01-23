@@ -22,8 +22,8 @@ public class StatesService {
 		return statesRepository.findAll();
 	}
 
-	public States getStateById(Long id) {
-		return statesRepository.findById(id).get();
+	public States getStateById(long id) {
+		return statesRepository.findById(id);
 	}
 
 	public States UpdateStateById(States statesEntity) {

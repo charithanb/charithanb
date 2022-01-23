@@ -7,5 +7,5 @@ import com.tourcoreservice.entity.PackageSuggest;
 
 @Repository
 public interface PackageSuggestRepository extends JpaRepository<PackageSuggest, Long> {
-
+	PackageSuggest findById(long id);
 }

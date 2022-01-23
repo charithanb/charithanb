@@ -7,5 +7,5 @@ import com.tourcoreservice.entity.SeasonPackageSuggest;
 
 @Repository
 public interface SeasonPackageSuggestRepository extends JpaRepository<SeasonPackageSuggest, Long> {
-
+	SeasonPackageSuggest findById(long id);
 }

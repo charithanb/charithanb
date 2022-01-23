@@ -22,7 +22,7 @@ public class CustomisePackageFlightinfoService {
 		return customisePackageFlightinfoRepository.findAll();
 	}
 
-	public CustomisePackageFlightinfo getById(Long id) {
+	public CustomisePackageFlightinfo getById(long id) {
 		return customisePackageFlightinfoRepository.findById(id).get();
 	}
 

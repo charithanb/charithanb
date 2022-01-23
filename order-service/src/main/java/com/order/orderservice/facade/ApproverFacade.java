@@ -50,7 +50,7 @@ public class ApproverFacade {
 		return approverPojoListResponse;
 	}
 
-	public ApproverPojoResponse getByid(Long id) {
+	public ApproverPojoResponse getByid(long id) {
 		ApproverPojoResponse approverPojoResponse = new ApproverPojoResponse();
 		Approver approver = approverService.getApproverById(id);
 		ApproverPojo approverPojo = ObjectMapperUtils.map(approver, ApproverPojo.class);

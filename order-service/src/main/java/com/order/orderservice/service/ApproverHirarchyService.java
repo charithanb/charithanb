@@ -22,7 +22,7 @@ public class ApproverHirarchyService {
 		return approverHirarchyRepository.findAll();
 	}
 
-	public ApproverHirarchy getApproverHirarchyById(Long id) {
+	public ApproverHirarchy getApproverHirarchyById(long id) {
 		return approverHirarchyRepository.findById(id).get();
 	}
 

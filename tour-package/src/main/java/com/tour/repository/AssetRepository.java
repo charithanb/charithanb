@@ -7,5 +7,5 @@ import com.tourcoreservice.entity.Asset;
 
 @Repository
 public interface AssetRepository extends JpaRepository<Asset, Long> {
-
+	Asset findById(long id);
 }

@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.tourcoreservice.entity.DurationPackageSuggest;
 
 @Repository
-public interface DurationPackageSuggestRepository extends JpaRepository<DurationPackageSuggest, Long>{
-
+public interface DurationPackageSuggestRepository extends JpaRepository<DurationPackageSuggest, Long> {
+	DurationPackageSuggest findById(long id);
 }

@@ -36,7 +36,7 @@ public class StatesController {
 
 	// List State by ID
 	@GetMapping("/{id}")
-	public StatesPojoResponse getStateById(@PathVariable Long id) {
+	public StatesPojoResponse getStateById(@PathVariable long id) {
 		return statesFacade.getState(id);
 	}
 

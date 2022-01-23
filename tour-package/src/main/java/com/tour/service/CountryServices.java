@@ -26,7 +26,7 @@ public class CountryServices {
 
 	// To fetch a country details by id
 	public Country getCountryById(long id) {
-		return countryRepository.findById(id).get();
+		return countryRepository.findById(id);
 	}
 
 	// To update Country

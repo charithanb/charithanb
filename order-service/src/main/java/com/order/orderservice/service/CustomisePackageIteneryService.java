@@ -22,7 +22,7 @@ public class CustomisePackageIteneryService {
 		return customisePackageItenaryRepository.findAll();
 	}
 
-	public CustomisePackageIternery getById(Long id) {
+	public CustomisePackageIternery getById(long id) {
 		return customisePackageItenaryRepository.findById(id).get();
 	}
 

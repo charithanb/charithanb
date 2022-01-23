@@ -93,7 +93,7 @@ public class RegionFacade {
 		return regionDestrictTalukPojoResponse;
 	}
 
-	private void ifDataAlreadyExist(Long id) {
+	private void ifDataAlreadyExist(long id) {
 		Optional<Regions> region = regionService.findRegionById(id);
 		if (ObjectUtils.isEmpty(region)) {
 			throw new DataDoesNotExistException("Data doesn't exist");
@@ -156,7 +156,7 @@ public class RegionFacade {
 		return createDeleteUpdateResponse(null, "Deleted Successfully", null, null);
 	}
 
-	public RegionDestrictTalukPojoResponse getDistrictById(Long id) {
+	public RegionDestrictTalukPojoResponse getDistrictById(long id) {
 		ifDataDoesNotExists(id);
 		RegionDestrictTalukPojoResponse regionDestrictTalukPojoResponse = new RegionDestrictTalukPojoResponse();
 		Optional<District> district = regionService.findDistrictById(id);
@@ -216,13 +216,13 @@ public class RegionFacade {
 		regionService.saveTaluk(taluk);
 	}
 
-	public RegionDestrictTalukPojoResponse deleteTaluk(Long id) {
+	public RegionDestrictTalukPojoResponse deleteTaluk(long id) {
 		ifTalukDoesNotExist(id);
 		regionService.deleteTaluk(id);
 		return createDeleteUpdateResponse(null, "Deleted Successfully", null, null);
 	}
 
-	public RegionDestrictTalukPojoResponse getTalukById(Long id) {
+	public RegionDestrictTalukPojoResponse getTalukById(long id) {
 		ifTalukDoesNotExist(id);
 		RegionDestrictTalukPojoResponse regionDestrictTalukPojoResponse = new RegionDestrictTalukPojoResponse();
 		Optional<Taluk> taluk = regionService.findTalukById(id);

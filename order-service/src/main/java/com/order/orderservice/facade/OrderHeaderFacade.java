@@ -55,7 +55,7 @@ public class OrderHeaderFacade {
 		return orderHeaderPojoListResponse;
 	}
 
-	public OrderHeaderPojoResponse getOrderHeaderByid(Long id) {
+	public OrderHeaderPojoResponse getOrderHeaderByid(long id) {
 		OrderHeaderPojoResponse orderPojoResponse = new OrderHeaderPojoResponse();
 		OrderHeader orderHeader = orderHeaderService.getOrderyId(id);
 		OrderHeaderPojo orderHeaderPojo = ObjectMapperUtils.map(orderHeader, OrderHeaderPojo.class);

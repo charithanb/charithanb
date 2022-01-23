@@ -8,4 +8,5 @@ import com.tourcoreservice.entity.Tourpackage;
 @Repository
 public interface Packagerepository extends JpaRepository<Tourpackage, Long> {
 
+	Tourpackage findById(long id);
 }

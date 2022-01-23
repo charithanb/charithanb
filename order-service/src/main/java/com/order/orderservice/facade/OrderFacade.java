@@ -62,7 +62,7 @@ public class OrderFacade {
 		return createDeleteUpdateResponse(ordersPojo, "Updated successfully");
 	}
 
-	public OrderPojoResponse getOrderByid(Long id) {
+	public OrderPojoResponse getOrderByid(long id) {
 		OrderPojoResponse orderPojoResponse = new OrderPojoResponse();
 		Orders orders = orderService.getOrderyId(id);
 		OrdersPojo ordersPojo = ObjectMapperUtils.map(orders, OrdersPojo.class);

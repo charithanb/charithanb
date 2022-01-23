@@ -34,7 +34,7 @@ public class CustomisePackageController {
 	}
 
 	@GetMapping("/{id}")
-	public CustomisePackagePojoRespone getCustomisePackageById(@PathVariable Long id) {
+	public CustomisePackagePojoRespone getCustomisePackageById(@PathVariable long id) {
 		return customisePackageFacade.getData(id);
 	}
 

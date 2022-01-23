@@ -22,7 +22,7 @@ public class ApproversRegionService {
 		return approversRegionRepository.findAll();
 	}
 
-	public ApproverRegion getyId(Long id) {
+	public ApproverRegion getyId(long id) {
 		return approversRegionRepository.findById(id).get();
 	}
 

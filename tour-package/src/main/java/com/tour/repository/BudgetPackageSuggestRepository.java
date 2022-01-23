@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.tourcoreservice.entity.BudgetPackageSuggest;
 
 public interface BudgetPackageSuggestRepository extends JpaRepository<BudgetPackageSuggest, Long> {
-
+	BudgetPackageSuggest findById(long id);
 }

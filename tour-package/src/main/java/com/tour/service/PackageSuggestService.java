@@ -19,7 +19,7 @@ public class PackageSuggestService {
 	}
 
 	public PackageSuggest getById(long id) {
-		 return packageSuggestRepository.findById(id).get();
+		 return packageSuggestRepository.findById(id);
     }
 
 	public List<PackageSuggest> listAll() {

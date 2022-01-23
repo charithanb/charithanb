@@ -9,5 +9,5 @@ import com.tourcoreservice.entity.States;
 public interface StatesRepository extends JpaRepository<States,Long>{
 
 	States findByname(String name);
-
+	States findById(long id);
 }

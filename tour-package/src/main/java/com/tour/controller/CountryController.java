@@ -30,7 +30,7 @@ public class CountryController {
 
 	// List Country by ID
 	@GetMapping("/{id}")
-	public CountryPojoResponse getCountryById(@PathVariable Long id) {
+	public CountryPojoResponse getCountryById(@PathVariable("id") long id) {
 		return countryFacade.getCountry(id);
 	}
 

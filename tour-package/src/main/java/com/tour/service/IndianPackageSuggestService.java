@@ -32,6 +32,6 @@ public class IndianPackageSuggestService {
 	}
 
 	public IndianPackageSuggest getById(long id) {
-		return indianPackageSuggestRepository.findById(id).get();
+		return indianPackageSuggestRepository.findById(id);
 	}
 }

@@ -37,7 +37,7 @@ public class CustomisePackageFacade {
 		return customisePackagePojoListResponse;
 	}
 
-	public CustomisePackagePojoRespone getData(Long id) {
+	public CustomisePackagePojoRespone getData(long id) {
 		CustomisePackagePojoRespone customisePackagePojoRespone = new CustomisePackagePojoRespone();
 		CustomisePackage customisePackage = customisePackageService.getDataId(id);
 		CustomisePackagePojo customisePackagePojo = ObjectMapperUtils.map(customisePackage, CustomisePackagePojo.class);

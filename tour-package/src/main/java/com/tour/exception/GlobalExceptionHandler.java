@@ -9,6 +9,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
+import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -18,9 +19,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		String bodyOfResponse = "Iternery Already Exists";
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
-	
+
 	@ExceptionHandler(value = { DataAlreadyExistException.class })
 	protected ResponseEntity<Object> dataAlreadyExistException(RuntimeException ex, WebRequest request) {
+		String bodyOfResponse = ex.getMessage();
+		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
+	}
+
+	@ExceptionHandler(value = { DataDoesNotExistException.class })
+	protected ResponseEntity<Object> dataDoesNotExistException(RuntimeException ex, WebRequest request) {
 		String bodyOfResponse = ex.getMessage();
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}

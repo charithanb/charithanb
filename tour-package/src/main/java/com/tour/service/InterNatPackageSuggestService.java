@@ -31,6 +31,6 @@ public class InterNatPackageSuggestService {
 	}
 
 	public InterNatPackageSuggest getByid(long id) {
-		return interNatPackageSuggestRepository.findById(id).get();
+		return interNatPackageSuggestRepository.findById(id);
 	}
 }

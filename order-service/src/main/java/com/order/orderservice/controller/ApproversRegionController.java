@@ -34,7 +34,7 @@ public class ApproversRegionController {
 	}
 
 	@GetMapping("/{id}")
-	public ApproverRegionPojoResponse getApproversRegionById(@PathVariable Long id) {
+	public ApproverRegionPojoResponse getApproversRegionById(@PathVariable long id) {
 		return approversRegionFacade.getByid(id);
 	}
 

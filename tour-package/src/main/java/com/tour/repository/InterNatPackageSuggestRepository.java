@@ -7,5 +7,5 @@ import com.tourcoreservice.entity.InterNatPackageSuggest;
 
 @Repository
 public interface InterNatPackageSuggestRepository extends JpaRepository<InterNatPackageSuggest,Long > {
-	
+	InterNatPackageSuggest findById(long id);
 }

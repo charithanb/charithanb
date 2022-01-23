@@ -54,7 +54,7 @@ public class CustomisePackageIteneryFacade {
 
 	}
 
-	public CustomisePackageItenaryPojoResponse getByid(Long id) {
+	public CustomisePackageItenaryPojoResponse getByid(long id) {
 		CustomisePackageItenaryPojoResponse customisePackageItenaryPojoResponse = new CustomisePackageItenaryPojoResponse();
 		CustomisePackageIternery customisePackageItenary = customisePackageItenaryService.getById(id);
 		CustomisePackageIteneryPojo customisePackageItenaryPojo = ObjectMapperUtils.map(customisePackageItenary,

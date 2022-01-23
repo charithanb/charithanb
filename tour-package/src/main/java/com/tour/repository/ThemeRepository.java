@@ -7,5 +7,5 @@ import com.tourcoreservice.entity.Theme;
 
 @Repository
 public interface ThemeRepository extends JpaRepository<Theme, Long> {
-
+	Theme findById(long id);
 }

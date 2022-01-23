@@ -34,7 +34,7 @@ public class ApproverHirarchyController {
 	}
 
 	@GetMapping("/{id}")
-	public ApproverHirarchyPojoResponse getApproverHirarchyById(@PathVariable Long id) {
+	public ApproverHirarchyPojoResponse getApproverHirarchyById(@PathVariable long id) {
 		return approverHirarchyFacade.getApproverHirarchyByid(id);
 	}
 

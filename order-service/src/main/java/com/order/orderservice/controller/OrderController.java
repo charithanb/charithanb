@@ -34,7 +34,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/{id}")
-	public OrderPojoResponse getOrderById(@PathVariable Long id) {
+	public OrderPojoResponse getOrderById(@PathVariable long id) {
 		return orderFacade.getOrderByid(id);
 	}
 

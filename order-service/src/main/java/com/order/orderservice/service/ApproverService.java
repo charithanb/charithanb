@@ -22,7 +22,7 @@ public class ApproverService {
 		return approverRepository.findAll();
 	}
 
-	public Approver getApproverById(Long id) {
+	public Approver getApproverById(long id) {
 		return approverRepository.findById(id).get();
 	}
 

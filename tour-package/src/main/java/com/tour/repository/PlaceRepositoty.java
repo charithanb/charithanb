@@ -6,5 +6,5 @@ import com.tourcoreservice.entity.Place;
 
 @Repository
 public interface PlaceRepositoty extends JpaRepository<Place, Long> {
-
+	Place findById(long id);
 }

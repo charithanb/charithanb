@@ -34,7 +34,7 @@ public class CustomisePacakageIteneryController {
 	}
 
 	@GetMapping("/{id}")
-	public CustomisePackageItenaryPojoResponse getIteneryById(@PathVariable Long id) {
+	public CustomisePackageItenaryPojoResponse getIteneryById(@PathVariable long id) {
 		return customisePackageItenaryFacade.getByid(id);
 	}
 

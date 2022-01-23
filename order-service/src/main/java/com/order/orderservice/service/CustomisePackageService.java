@@ -22,7 +22,7 @@ public class CustomisePackageService {
 		return customisePackageRepository.findAll();
 	}
 
-	public CustomisePackage getDataId(Long id) {
+	public CustomisePackage getDataId(long id) {
 		return customisePackageRepository.findById(id).get();
 	}
 

@@ -35,7 +35,7 @@ public class CustomisePackageHotelInfoController {
 	}
 
 	@GetMapping("/{id}")
-	public CustomisePackageHotelInfoPojoResponse getCustomisePackageHotelInfoById(@PathVariable Long id) {
+	public CustomisePackageHotelInfoPojoResponse getCustomisePackageHotelInfoById(@PathVariable long id) {
 		return customisePackageHotelInfoFacade.getByid(id);
 	}
 

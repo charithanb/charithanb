@@ -22,7 +22,7 @@ public class CustomisePackageHotelInfoService {
 		return customisePackageHotelInfoRepository.findAll();
 	}
 
-	public CustomisePackageHotelInfo getById(Long id) {
+	public CustomisePackageHotelInfo getById(long id) {
 		return customisePackageHotelInfoRepository.findById(id).get();
 	}
 

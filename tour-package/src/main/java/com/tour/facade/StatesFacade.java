@@ -49,7 +49,7 @@ public class StatesFacade {
 		return statesListResponse;
 	}
 
-	public StatesPojoResponse getState(Long id) {
+	public StatesPojoResponse getState(long id) {
 		ifStatesDoesNotExist(id);
 		StatesPojoResponse stateResponse = new StatesPojoResponse();
 		States stateEntity = statesService.getStateById(id);
@@ -58,7 +58,7 @@ public class StatesFacade {
 		return stateResponse;
 	}
 
-	private void ifStatesDoesNotExist(Long id) {
+	private void ifStatesDoesNotExist(long id) {
 		States states = statesService.getStateById(id);
 		if (ObjectUtils.isEmpty(states)) {
 			throw new DataDoesNotExistException("Data doesn't exist");

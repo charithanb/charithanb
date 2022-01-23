@@ -54,7 +54,7 @@ public class CustomisePackageFlightinfoFacade {
 		return customisePackageFlightinfoPojoListResponse;
 	}
 
-	public CustomisePackageFlightinfoPojoResponse getDataByid(Long id) {
+	public CustomisePackageFlightinfoPojoResponse getDataByid(long id) {
 		CustomisePackageFlightinfoPojoResponse customisePackageFlightinfoPojoResponse = new CustomisePackageFlightinfoPojoResponse();
 		CustomisePackageFlightinfo customisePackageFlightinfo = customisePackageFlightinfoService.getById(id);
 		CustomisePackageFlightinfoPojo customisePackageFlightinfoPojo = ObjectMapperUtils

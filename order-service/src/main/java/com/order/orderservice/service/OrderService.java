@@ -27,8 +27,8 @@ public class OrderService {
 		
 	}
 
-	public Orders getOrderyId(Long id) {
-		return orderRepository.findById(id).get();
+	public Orders getOrderyId(long id) {
+		return orderRepository.findById(id);
 	}
 
 	public Orders Update(Orders orders) {

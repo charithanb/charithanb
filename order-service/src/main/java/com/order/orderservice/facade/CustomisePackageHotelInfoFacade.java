@@ -52,7 +52,7 @@ public class CustomisePackageHotelInfoFacade {
 		return CustomisePackageHotelInfoPojoListResponse;
 	}
 
-	public CustomisePackageHotelInfoPojoResponse getByid(Long id) {
+	public CustomisePackageHotelInfoPojoResponse getByid(long id) {
 		CustomisePackageHotelInfoPojoResponse customisePackageHotelInfoPojoResponse = new CustomisePackageHotelInfoPojoResponse();
 		CustomisePackageHotelInfo customisePackageHotelInfo = customisePackageHotelInfoService.getById(id);
 		CustomisePackageHotelInfoPojo customisePackageHotelInfoPojo = ObjectMapperUtils.map(customisePackageHotelInfo,
