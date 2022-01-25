@@ -8,4 +8,7 @@ import com.tourcoreservice.entity.Regions;
 @Repository
 public interface RegionRepository extends JpaRepository<Regions,Long> {
 
+	Regions findById(long id);
+
+	Regions findByName(String name);
 }

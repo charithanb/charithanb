@@ -35,7 +35,7 @@ public class RegionService {
 		return regionRepository.findAll();
 	}
 
-	public Optional<Regions> findRegionById(long id) {
+	public Regions findRegionById(long id) {
 		// TODO Auto-generated method stub
 		return regionRepository.findById(id);
 	}
@@ -109,4 +109,14 @@ public class RegionService {
 		talukRepository.save(taluk);
 
 	}
+
+	public Regions findRegionByname(String name) {
+		return regionRepository.findByName(name);
+	}
+
+	public Optional<District> findByName(String name) {
+		return districtRepository.findByName(name);
+	}
+
+
 }

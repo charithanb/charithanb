@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import com.tour.service.CountryServices;
+import com.tour.service.RegionService;
 import com.tour.util.ObjectMapperUtils;
 import com.tourcoreservice.entity.Country;
 import com.tourcoreservice.entity.Regions;
@@ -16,6 +17,7 @@ import com.tourcoreservice.exception.tourpackage.DataAlreadyExistException;
 import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.pojo.tourpackage.CountryPojo;
+import com.tourcoreservice.pojo.tourpackage.RegionPojo;
 import com.tourcoreservice.response.tourpackage.CountryPojoListResponse;
 import com.tourcoreservice.response.tourpackage.CountryPojoResponse;
 
@@ -25,12 +27,24 @@ public class CountryFacade {
 	@Autowired
 	private CountryServices countryService;
 
+	@Autowired
+	private RegionService regionService;
+	
 	public CountryPojoResponse saveCountry(CountryPojo country) {
 		ifCountryExist(country.getName());
+		ifRegionDoesNotExist(country.getRegion());
 		Country countryEntity = ObjectMapperUtils.map(country, Country.class);
 		Country countryServiceEntity = countryService.saveCountry(countryEntity);
 		CountryPojo countryPojo = ObjectMapperUtils.map(countryServiceEntity, CountryPojo.class);
 		return createDeleteUpdateResponse(countryPojo, "Created successfully");
+	}
+
+	private void ifRegionDoesNotExist(RegionPojo region) {
+		Regions regions = regionService.findRegionById(region.getId());
+		if(!ObjectUtils.isEmpty(regions)) {
+			throw new DataAlreadyExistException("Data already exists");
+		}
+		
 	}
 
 	private void ifCountryExist(String name) {

@@ -3,7 +3,7 @@ package com.tourcoreservice.pojo.tourpackage;
 import java.util.List;
 
 public class MainPlacePojo {
-	private Long id;
+	private long id;
 	private String name;
 	private TalukPojo taluk;
 

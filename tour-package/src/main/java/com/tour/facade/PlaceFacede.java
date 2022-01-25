@@ -2,6 +2,7 @@ package com.tour.facade;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import com.tour.service.PlaceService;
+import com.tour.service.RegionService;
 import com.tour.util.ObjectMapperUtils;
 import com.tourcoreservice.entity.District;
 import com.tourcoreservice.entity.MainPlace;
@@ -29,6 +31,9 @@ public class PlaceFacede {
 
 	@Autowired
 	private PlaceService placeService;
+	
+	@Autowired
+	private RegionService regionService;
 
 	public PlacePojoListResponse listAllPlaces() {
 		PlacePojoListResponse placeListResponse = new PlacePojoListResponse();
@@ -57,15 +62,24 @@ public class PlaceFacede {
 	}
 
 	public PlacePojoResponce savePlace(PlacePojo placepojo) {
-		ifPlaceAlreadyExists(placepojo.getId());
+		ifPlaceAlreadyExists(placepojo.getName());
+		ifDistrictDoesNotExist(placepojo.getDistrict());
 		Place placeEntity = ObjectMapperUtils.map(placepojo, Place.class);
 		Place placeserviceEntity = placeService.savePlace(placeEntity);
 		PlacePojo placeservicePojo = ObjectMapperUtils.map(placeserviceEntity, PlacePojo.class);
 		return createDeleteUpdateResponse(placeservicePojo, "Created successfully");
 	}
 
-	private void ifPlaceAlreadyExists(long id) {
-		Place place = placeService.getPlaceById(id);
+	private void ifDistrictDoesNotExist(District district) {
+		Optional<District> district2 = regionService.findDistrictById(district.getId());
+		if(ObjectUtils.isEmpty(district2)) {
+			throw new DataDoesNotExistException("District doesn't exists");
+		}
+		
+	}
+
+	private void ifPlaceAlreadyExists(String placeName) {
+		Place place = placeService.getByName(placeName);
 		if(!ObjectUtils.isEmpty(place)) {
 			throw new DataAlreadyExistException("Data already exists");
 		}

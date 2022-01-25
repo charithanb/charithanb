@@ -59,4 +59,8 @@ public class PlaceService {
 		mainPlaceRepository.delete(mainPlace);
 		
 	}
+
+	public Place getByName(String placeName) {
+		return placeRepositoty.findByName(placeName);
+	}
 }

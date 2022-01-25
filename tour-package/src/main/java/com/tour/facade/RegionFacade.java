@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 
 import com.tour.service.RegionService;
+import com.tour.service.StatesService;
 import com.tourcoreservice.entity.District;
 import com.tourcoreservice.entity.Regions;
 import com.tourcoreservice.entity.States;
@@ -19,6 +20,7 @@ import com.tourcoreservice.exception.tourpackage.DataDoesNotExistException;
 import com.tourcoreservice.pojo.generic.ResponseMessagePojo;
 import com.tourcoreservice.pojo.tourpackage.DistrictPojo;
 import com.tourcoreservice.pojo.tourpackage.RegionPojo;
+import com.tourcoreservice.pojo.tourpackage.StatesPojo;
 import com.tourcoreservice.pojo.tourpackage.TalukPojo;
 import com.tourcoreservice.response.tourpackage.RegionDestrictTalukPojoResponse;
 import com.tourcoreservice.response.tourpackage.RegionDistrictTalukPojoListResponse;
@@ -29,17 +31,20 @@ public class RegionFacade {
 
 	@Autowired
 	private RegionService regionService;
+	
+	@Autowired
+	private StatesService statesService;
 
 	public RegionDestrictTalukPojoResponse create(RegionPojo regionPojo) {
-		ifRegionAtlreadyExist(regionPojo.getId());
+		ifRegionAtlreadyExist(regionPojo.getName());
 		Regions regions = ObjectMapperUtils.map(regionPojo, Regions.class);
 		regions = regionService.create(regions);
 		regionPojo = ObjectMapperUtils.map(regions, RegionPojo.class);
 		return createDeleteUpdateResponse(regionPojo, "Created Successfully", null, null);
 	}
 
-	private void ifRegionAtlreadyExist(long id) {
-		Optional<Regions> region = regionService.findRegionById(id);
+	private void ifRegionAtlreadyExist(String name) {
+		Regions region = regionService.findRegionByname(name);
 		if (!ObjectUtils.isEmpty(region)) {
 			throw new DataAlreadyExistException("Data already exists");
 		}
@@ -71,9 +76,9 @@ public class RegionFacade {
 
 	public RegionDestrictTalukPojoResponse update(RegionPojo regionPojo) {
 		ifDataAlreadyExist(regionPojo.getId());
-		Optional<Regions> region = regionService.findRegionById(regionPojo.getId());
-		ObjectMapperUtils.map(regionPojo, region.get());
-		Regions regionEntity = regionService.save(region.get());
+		Regions region = regionService.findRegionById(regionPojo.getId());
+		ObjectMapperUtils.map(regionPojo, region);
+		Regions regionEntity = regionService.save(region);
 		regionPojo = ObjectMapperUtils.map(regionEntity, RegionPojo.class);
 		return createDeleteUpdateResponse(regionPojo, "Updated Successfully", null, null);
 	}
@@ -86,15 +91,15 @@ public class RegionFacade {
 
 	public RegionDestrictTalukPojoResponse regionById(Long id) {
 		ifDataAlreadyExist(id);
-		Optional<Regions> region = regionService.findRegionById(id);
+		Regions region = regionService.findRegionById(id);
 		RegionDestrictTalukPojoResponse regionDestrictTalukPojoResponse = new RegionDestrictTalukPojoResponse();
-		RegionPojo regionPojo = ObjectMapperUtils.map(region.get(), RegionPojo.class);
+		RegionPojo regionPojo = ObjectMapperUtils.map(region.getId(), RegionPojo.class);
 		regionDestrictTalukPojoResponse.setRegionPojo(regionPojo);
 		return regionDestrictTalukPojoResponse;
 	}
 
 	private void ifDataAlreadyExist(long id) {
-		Optional<Regions> region = regionService.findRegionById(id);
+		Regions region = regionService.findRegionById(id);
 		if (ObjectUtils.isEmpty(region)) {
 			throw new DataDoesNotExistException("Data doesn't exist");
 		}
@@ -102,15 +107,24 @@ public class RegionFacade {
 	}
 
 	public RegionDestrictTalukPojoResponse createDistrict(DistrictPojo districtPojo) {
-		ifDistrictAlredyExists(districtPojo.getId());
+		ifDistrictAlredyExists(districtPojo.getName());
+		ifStateDoesNotExist(districtPojo.getState());
 		District district = ObjectMapperUtils.map(districtPojo, District.class);
 		district = regionService.createDistrict(district);
 		districtPojo = ObjectMapperUtils.map(district, DistrictPojo.class);
 		return createDeleteUpdateResponse(null, "Created Successfully", districtPojo, null);
 	}
 
-	private void ifDistrictAlredyExists(long id) {
-		Optional<District> district = regionService.findDistrictById(id);
+	private void ifStateDoesNotExist(StatesPojo state) {
+		States states = statesService.getStateById(state.getId());
+		if(ObjectUtils.isEmpty(states)) {
+			throw new DataDoesNotExistException("State doesn't exists");
+		}
+		
+	}
+
+	private void ifDistrictAlredyExists(String name) {
+		Optional<District> district = regionService.findByName(name);
 		if (!ObjectUtils.isEmpty(district)) {
 			throw new DataAlreadyExistException("Data already exists");
 		}
