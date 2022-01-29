@@ -25,7 +25,7 @@ public class UserPasswordResetFacade {
 		UserPasswordReset userPasswordReset = ObjectMapperUtils.map(passwordResetPojo, UserPasswordReset.class);
 		userPasswordReset = userPasswordResetService.create(userPasswordReset);
 		passwordResetPojo = ObjectMapperUtils.map(userPasswordReset, PasswordResetPojo.class);
-		return createDeleteUpdatePasswordResponse(passwordResetPojo, "Order created Successfully ");
+		return createDeleteUpdatePasswordResponse(passwordResetPojo, "Password created Successfully ");
 	}
 
 	public PasswordResetPojoResponse passwordReset(PasswordResetPojo passwordResetPojo) {
